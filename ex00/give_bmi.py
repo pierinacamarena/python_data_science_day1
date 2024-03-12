@@ -66,12 +66,18 @@ def apply_limit(bmi: list[int | float], limit: int) -> list[bool]:
         or if they are not of the correct type
         (BMI values should be int or float, limit should be int).
     """
-    if not all_integers_or_floats(bmi) or not isinstance(limit, int):
-        raise ValueError("Error: Bmi's must be integers or floats "
-                         "and limit must be an integer")
+    try:
+        if not isinstance(limit, int) or limit <= 0:
+            raise ValueError("Error: limit must be a positive integer")
+        
+        if not all_integers_or_floats(bmi):
+            raise ValueError("Error: Bmi's must be integers or floats")
 
-    if not all_values_are_positive(bmi) or limit <= 0:
-        raise ValueError("Error: the values of height or "
-                         "weight must be positive")
+        if not all_values_are_positive(bmi):
+            raise ValueError("Error: the values of bmis must be positive")
 
-    return [b > limit for b in bmi]
+        return [b > limit for b in bmi]
+    
+    except Exception as error:
+        print(error)
+        return []
