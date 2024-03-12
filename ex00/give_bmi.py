@@ -34,12 +34,12 @@ def give_bmi(height: list[int | float],
             raise ValueError("Error: invalid number of weights or heights")
 
         if not all_integers_or_floats(height + weight):
-            raise ValueError("""Error: height and
-                             weight must be integers or floats""")
+            raise ValueError("Error: height and weight must be "
+                             "integers or floats")
 
         if not all_values_are_positive(height + weight):
-            raise ValueError("""Error: the values of height
-                             or weight must be positive""")
+            raise ValueError("Error: the values of height or "
+                             "weight must be positive")
 
         bmis = [w / h ** 2 for h, w in zip(height, weight)]
         return bmis
@@ -67,11 +67,11 @@ def apply_limit(bmi: list[int | float], limit: int) -> list[bool]:
         (BMI values should be int or float, limit should be int).
     """
     if not all_integers_or_floats(bmi) or not isinstance(limit, int):
-        raise ValueError("""Error: Bmi's must be integers or
-                         floats and limit must be an integer""")
+        raise ValueError("Error: Bmi's must be integers or floats "
+                         "and limit must be an integer")
 
     if not all_values_are_positive(bmi) or limit <= 0:
-        raise ValueError("""Error: the values of height or
-                         weight must be positive""")
+        raise ValueError("Error: the values of height or "
+                         "weight must be positive")
 
     return [b > limit for b in bmi]
