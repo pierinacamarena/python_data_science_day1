@@ -9,7 +9,8 @@ def is_list_of_lists(var: object) -> bool:
     - var: The variable to check.
 
     Returns:
-    - bool: True if the variable is a list and all its elements are lists, False otherwise.
+    - bool: True if the variable is a list and all its elements are lists,
+    False otherwise.
     """
     if not isinstance(var, list):
         return False
@@ -32,13 +33,38 @@ def lists_of_same_size(lst: list) -> bool:
         if array.dtype == object or array.ndim != 2:
             return False
         return True
-    except:
+    except Exception as error:
+        print(error)
         return False
 
+
 def slice_me(family: list, start: int, end: int) -> list:
+    """
+    Slices a list of lists (family) from the 'start' index to the 'end' index,
+    ensuring all lists are of the same size.
+
+    Validates input types and conditions before slicing. If validation fails,
+    it raises an exception with an error message.
+    After slicing, it prints the original and new shapes of the 'family' array.
+    Returns the sliced portion as a list of lists.
+
+    Parameters:
+    - family (list): A list of lists to slice.
+    - start (int): Start index for slicing.
+    - end (int): End index for slicing, exclusive.
+
+    Returns:
+    - list: A sliced portion of 'family' as a list of lists
+    or an empty list on error.
+
+    Raises:
+    - ValueError: If 'family' is not a list of lists, if lists in 'family'
+    are not of the same size, if 'start' or 'end' are not integers,
+    or if the 'end' index is not valid.
+    """
 
     try:
-        #Step handle errors
+        # Step0 handle errors
         if not is_list_of_lists(family):
             raise ValueError("Error: family must be a list of lists")
         if not lists_of_same_size(family):
@@ -47,24 +73,23 @@ def slice_me(family: list, start: int, end: int) -> list:
             raise ValueError("Error: start and end must be integers")
         if not family[end - 1]:
             raise ValueError("Error: end index not valid")
-    
-        #convert list to numpy array
+
+        # Step 1 Convert list to numpy array
         array_family = np.array(family)
-        
-        #Step 1 print shape
+
+        # Step 2 print shape
         size = np.shape(array_family)
         print(f"My shape is : {size}")
 
-        #Step 2 truncate the list
-        sliced_array = array_family[start : end]
-        
-        #Step 3 print new shape
+        # Step 3 truncate the list
+        sliced_array = array_family[start: end]
+
+        # Step 4 print new shape
         size = np.shape(sliced_array)
         print(f"My new shape is : {size}")
-        
-        return sliced_array.tolist()
 
-        #Step 4 return the truncated list
+        # Step 5 return the truncated list
+        return sliced_array.tolist()
 
     except Exception as error:
         print(error)
