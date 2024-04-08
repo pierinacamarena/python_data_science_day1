@@ -3,19 +3,34 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def display_image_in_plot(img: any, title: str) -> None:
+    """
+    Displays the input image using matplotlib with the specified title. The image is shown in grayscale.
+
+    Parameters:
+    - img (any): The image to be displayed.
+    - title (str): The title for the image display.
+
+    Returns:
+    - None
+    """
     plt.imshow(img, cmap='gray')
     plt.title(title)
     plt.axis('on')
     plt.show()
 
-
 def get_pixel_content(img: any) -> any:
-    # Ensure the image is in RGB format
-    img_rgb = img.convert("RGB")
-
-    # Pixels content
-    pixels = list(img_rgb.getdata())
-    pixels_array = np.array(pixels)
+    # Check if the image is already in a grayscale format
+    if img.mode == "L":
+        # Image is already in grayscale, so directly use its data
+        pixels = list(img.getdata())
+        # Reshape to 3D array with shape (height, width, 1) to match the example output
+        pixels_array = np.array(pixels).reshape(img.size[1], img.size[0], 1)
+    else:
+        # Ensure the image is in RGB format for color images
+        img_rgb = img.convert("RGB")
+        pixels = list(img_rgb.getdata())
+        # Reshape to 3D array for color images with shape (height, width, 3)
+        pixels_array = np.array(pixels).reshape(img.size[1], img.size[0], 3)
 
     return pixels_array
 
@@ -56,22 +71,15 @@ def ft_load(path: str) -> list:
         else:
             num_channels = 1
             
-        print(f"Number of channels: {num_channels}")
+        print(f"Number of channels: {num_channels} \n")
 
         pixels_array = get_pixel_content(img)
 
-        # # Ensure the image is in RGB format
-        # img_rgb = img.convert("RGB")
-
-        # # Pixels content
-        # pixels = list(img_rgb.getdata())
-        # pixels_array = np.array(pixels)
-
-        #Show image
+        # Show image
         # img.show()
 
-        #show image in plot
-        display_image_in_plot(img, "Original image")
+        # Show image in plot
+        # display_image_in_plot(img, "Original image")
 
 
         return pixels_array, img_array, img
