@@ -18,19 +18,34 @@ def display_image_in_plot(img: any, title: str) -> None:
     plt.axis('on')
     plt.show()
 
-def get_pixel_content(img: any) -> any:
-    # Check if the image is already in a grayscale format
+
+def get_pixel_content(img: Image) -> np.array:
+    """
+    Converts an image to a numpy array representing its pixel content.
+
+    Parameters:
+    - img (Image): The image object to convert, supporting 'L' (grayscale) and 'RGB' modes.
+
+    Returns:
+    - numpy.ndarray: The image's pixel data as a numpy array of shape (height, width, channels).
+                     Grayscale images return a shape of (height, width, 1), and RGB images return
+                     a shape of (height, width, 3).
+
+    The function first checks the image mode. If it's grayscale ('L'), it converts the image
+    directly to a numpy array with a single channel. For RGB images, or images converted to RGB,
+    it converts to a numpy array with three channels. Other image modes are converted to 'RGB'.
+    """
     if img.mode == "L":
-        # Image is already in grayscale, so directly use its data
+        # Getting all pixels into a list
         pixels = list(img.getdata())
-        # Reshape to 3D array with shape (height, width, 1) to match the example output
-        pixels_array = np.array(pixels).reshape(img.size[1], img.size[0], 1)
+        # Convert to a numpy array and reshape it to have a shape of (Height, Width, 1)
+        pixels_array = np.array(img).reshape(img.size[1], img.size[0], 1)
     else:
-        # Ensure the image is in RGB format for color images
         img_rgb = img.convert("RGB")
+        # Getting all pixels into a list
         pixels = list(img_rgb.getdata())
-        # Reshape to 3D array for color images with shape (height, width, 3)
-        pixels_array = np.array(pixels).reshape(img.size[1], img.size[0], 3)
+        # Convert to a numpy array and reshape it to have a shape of (Height, Width, 3)
+        pixels_array = np.array(img_rgb).reshape(img.size[1], img.size[0], 3)
 
     return pixels_array
 
@@ -75,14 +90,10 @@ def ft_load(path: str) -> list:
 
         pixels_array = get_pixel_content(img)
 
-        # Show image
-        # img.show()
-
         # Show image in plot
-        # display_image_in_plot(img, "Original image")
+        display_image_in_plot(img, "Original image")
 
-
-        return pixels_array, img_array, img
+        return pixels_array
 
     except IOError as e:
         print(f"Error loading the image: {e}")
