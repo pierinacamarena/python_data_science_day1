@@ -18,6 +18,7 @@ def display_image_in_plot(img: any, title: str) -> None:
     plt.axis('on')
     plt.show()
 
+
 def extract_edges(arr: np.ndarray) -> np.ndarray:
     """
     Extracts the edges of an image array. For a grayscale image (assumed to be encapsulated as a 3D array with depth 1),
@@ -52,29 +53,33 @@ def extract_edges(arr: np.ndarray) -> np.ndarray:
     return result
 
 
-def trim_pixels_array(np_array: any) -> any:
-    # For a 2D array, extract the first and last columns
-    first_column = np_array[:, 0]
-    last_column = np_array[:, -1]
-    # Combine the first and last columns and reshape
-    combined_array = np.vstack((first_column, last_column)).T
-    final_array = combined_array.reshape(1, -1, 1)
-    return final_array
+def get_pixel_content(img: Image) -> np.array:
+    """
+    Converts an image to a numpy array representing its pixel content.
 
+    Parameters:
+    - img (Image): The image object to convert, supporting 'L' (grayscale) and 'RGB' modes.
 
-def get_pixel_content(img: any) -> any:
-    # Check if the image is already in a grayscale format
+    Returns:
+    - numpy.ndarray: The image's pixel data as a numpy array of shape (height, width, channels).
+                     Grayscale images return a shape of (height, width, 1), and RGB images return
+                     a shape of (height, width, 3).
+
+    The function first checks the image mode. If it's grayscale ('L'), it converts the image
+    directly to a numpy array with a single channel. For RGB images, or images converted to RGB,
+    it converts to a numpy array with three channels. Other image modes are converted to 'RGB'.
+    """
     if img.mode == "L":
-        # Image is already in grayscale, so directly use its data
+        # Getting all pixels into a list
         pixels = list(img.getdata())
-        # Reshape to 3D array with shape (height, width, 1) to match the example output
-        pixels_array = np.array(pixels).reshape(img.size[1], img.size[0], 1)
+        # Convert to a numpy array and reshape it to have a shape of (Height, Width, 1)
+        pixels_array = np.array(img).reshape(img.size[1], img.size[0], 1)
     else:
-        # Ensure the image is in RGB format for color images
         img_rgb = img.convert("RGB")
+        # Getting all pixels into a list
         pixels = list(img_rgb.getdata())
-        # Reshape to 3D array for color images with shape (height, width, 3)
-        pixels_array = np.array(pixels).reshape(img.size[1], img.size[0], 3)
+        # Convert to a numpy array and reshape it to have a shape of (Height, Width, 3)
+        pixels_array = np.array(img_rgb).reshape(img.size[1], img.size[0], 3)
 
     return pixels_array
 
@@ -102,12 +107,12 @@ def ft_load(path: str) -> list:
         # Retrieve image shape
         img_array = np.array(img)
         shape = np.shape(img_array)
-        # print(f"The shape of image is: {shape}")
+        print(f"The shape of image is: {shape}")
 
         # Get the size of the image
         width, height = img.size
 
-        # print(f"Width - x axis: {width}px \nHeight - y axis: {height}px")
+        print(f"Width - x axis: {width}px \nHeight - y axis: {height}px")
 
         # Get channel
         if img_array.ndim == 3:
@@ -115,15 +120,12 @@ def ft_load(path: str) -> list:
         else:
             num_channels = 1
             
-        # print(f"Number of channels: {num_channels} \n")
+        print(f"Number of channels: {num_channels} \n")
 
         pixels_array = get_pixel_content(img)
 
-        # Show image
-        # img.show()
-
         # Show image in plot
-        # display_image_in_plot(img, "Original image")
+        display_image_in_plot(img, "Original image")
 
         return pixels_array, img_array, img
 

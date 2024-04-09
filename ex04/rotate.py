@@ -1,4 +1,4 @@
-from load_image import ft_load, get_pixel_content, display_image_in_plot, trim_pixels_array
+from load_image import ft_load, get_pixel_content, display_image_in_plot
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
@@ -81,7 +81,7 @@ def transpose_image(arr):
 def main():
 
     pixels_array, img_array, img = ft_load('animal.jpeg')
-    # print(pixels_array)
+    print(pixels_array)
 
     grayscale_image = zoom_and_display_info(img)
 
