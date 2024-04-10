@@ -27,7 +27,6 @@ print(bmi, type(bmi))
 print(apply_limit(bmi, 26))
 
 
-
 # Test 4
 
 height = [2.71, -4.3]

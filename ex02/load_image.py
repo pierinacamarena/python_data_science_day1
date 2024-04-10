@@ -36,7 +36,7 @@ def ft_load(path: str) -> list:
         # Print pixels content
         pixels = list(img_rgb.getdata())
         pixels_array = np.array(pixels)
-        
+
         return pixels_array
 
     except IOError as e:

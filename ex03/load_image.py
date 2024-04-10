@@ -2,9 +2,11 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def display_image_in_plot(img: any, title: str) -> None:
     """
-    Displays the input image using matplotlib with the specified title. The image is shown in grayscale.
+    Displays the input image using matplotlib with the specified title.
+    The image is shown in grayscale when it has a single channel.
 
     Parameters:
     - img (any): The image to be displayed.
@@ -24,27 +26,21 @@ def get_pixel_content(img: Image) -> np.array:
     Converts an image to a numpy array representing its pixel content.
 
     Parameters:
-    - img (Image): The image object to convert, supporting 'L' (grayscale) and 'RGB' modes.
+    - img (Image): The image object to convert, supporting 'L' (grayscale)
+    and 'RGB' modes.
 
     Returns:
-    - numpy.ndarray: The image's pixel data as a numpy array of shape (height, width, channels).
-                     Grayscale images return a shape of (height, width, 1), and RGB images return
-                     a shape of (height, width, 3).
-
-    The function first checks the image mode. If it's grayscale ('L'), it converts the image
-    directly to a numpy array with a single channel. For RGB images, or images converted to RGB,
-    it converts to a numpy array with three channels. Other image modes are converted to 'RGB'.
+    - numpy.ndarray: The image's pixel data as a numpy array
+                     of shape (height, width, channels).
+                     Grayscale images return a shape of (height, width, 1),
+                     and RGB images return a shape of (height, width, 3).
     """
     if img.mode == "L":
-        # Getting all pixels into a list
-        pixels = list(img.getdata())
-        # Convert to a numpy array and reshape it to have a shape of (Height, Width, 1)
+        # Convert to a numpy array & reshape it to (Height, Width, 1)
         pixels_array = np.array(img).reshape(img.size[1], img.size[0], 1)
     else:
         img_rgb = img.convert("RGB")
-        # Getting all pixels into a list
-        pixels = list(img_rgb.getdata())
-        # Convert to a numpy array and reshape it to have a shape of (Height, Width, 3)
+        # Convert to a numpy array & reshape it to (Height, Width, 3)
         pixels_array = np.array(img_rgb).reshape(img.size[1], img.size[0], 3)
 
     return pixels_array
@@ -85,7 +81,7 @@ def ft_load(path: str) -> list:
             num_channels = img_array.shape[2]
         else:
             num_channels = 1
-            
+
         print(f"Number of channels: {num_channels} \n")
 
         pixels_array = get_pixel_content(img)
@@ -93,8 +89,7 @@ def ft_load(path: str) -> list:
         # Show image in plot
         display_image_in_plot(img, "Original image")
 
-
-        return pixels_array, img_array, img
+        return pixels_array, img
 
     except IOError as e:
         print(f"Error loading the image: {e}")

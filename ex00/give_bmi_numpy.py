@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def all_integers_or_floats(lst) -> bool:
     """Check if all items in the list are integers or floats."""
 
@@ -44,7 +45,7 @@ def give_bmi(height: list[int | float],
         if not all_values_are_positive(height + weight):
             raise ValueError("Error: the values of height or "
                              "weight must be positive")
-        
+
         height_arr = np.array(height)
         weight_arr = np.array(weight)
 
@@ -76,7 +77,7 @@ def apply_limit(bmi: list[int | float], limit: int) -> list[bool]:
     try:
         if not isinstance(limit, int) or limit <= 0:
             raise ValueError("Error: limit must be a positive integer")
-        
+
         if not all_integers_or_floats(bmi):
             raise ValueError("Error: Bmi's must be integers or floats")
 
@@ -85,7 +86,7 @@ def apply_limit(bmi: list[int | float], limit: int) -> list[bool]:
 
         bmi_array = np.array(bmi)
         return (bmi_array > limit).tolist()
-    
+
     except Exception as error:
         print(error)
         return []
