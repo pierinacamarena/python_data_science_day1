@@ -75,7 +75,7 @@ def format_printing(arr: np.ndarray) -> None:
     print(f"{bottom_array}]")
 
 
-def transpose_image(arr: np.ndarray) -> np.ndarray:
+def ft_transpose_image(arr: np.ndarray) -> np.ndarray:
     """
     Transposes the given numpy array by reversing its axes. This flips
     the array's dimensions, similar to rotating or flipping an image.
@@ -87,12 +87,20 @@ def transpose_image(arr: np.ndarray) -> np.ndarray:
     - np.ndarray: A new numpy array with the same elements as `arr` but with
       its axes reversed.
     """
+
+    # Reverse the elements of the range of the array dimension
+    # Crucial step because it sets up how the array will be reoriented
     axes = tuple(reversed(range(arr.ndim)))
 
+    # New size of each dimension of new array, with flipped order
     new_shape = [arr.shape[axis] for axis in axes]
+
+    # Set up new "empty" array with the specified shape and dtype
     result = np.empty(new_shape, dtype=arr.dtype)
 
+    # Iterate over every possible coordinate of the array
     for index in np.ndindex(result.shape):
+        # Retrieve the corresponding value in the original array
         orig_index = tuple(index[axes.index(i)] for i in range(arr.ndim))
         result[index] = arr[orig_index]
 
@@ -111,7 +119,7 @@ def main():
     print(zoom_image_pixel_content)
 
     # Transpose(rotate) the image + plotting it & print its shape & pixels
-    transposed_image = transpose_image(np.array(grayscale_image))
+    transposed_image = ft_transpose_image(np.array(grayscale_image))
     transpose_pil_image = Image.fromarray(transposed_image)
     print(f"\nThe new shape after traspose is: {transpose_pil_image.size}")
     display_image_in_plot(transposed_image, 'Rotated Image')
